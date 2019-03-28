@@ -5,6 +5,12 @@ install_kibana() {
   local version=$2
   local install_path=$3
 
+  if [ "$(uname)" = "Darwin" ]; then
+    version=$version-darwin-x86_64
+  else
+    version=$version-linux-x86_64
+  fi
+
   if [ "$TMPDIR" = "" ]; then
     local tmp_download_dir=$(mktemp -d)
   else
@@ -50,6 +56,7 @@ download_source() {
   local download_path=$3
   local download_url=$(get_download_url $install_type $version)
 
+  echo Installing kibana from $download_url
   curl -sLo $download_path -C - $download_url
 }
 
